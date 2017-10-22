@@ -1,16 +1,11 @@
-'use strict'
+
 var express = require('express'),
   router = express.Router(),
   logger = require('../../config/logger');
 //import the user model
 mongoose = require('mongoose'),
-User = mongoose.model('User'),
-//Passport
-passportService = require('../../config/passport'),
-passport = require('passport');
+User = mongoose.model('User');
 
-var requireAuth = passport.authenticate('jwt', { session: false}),
-requireLogin = passport.authentication('local', {session: false});
 
 module.exports = function (app, config) {
     app.use('/api', router);
@@ -88,12 +83,12 @@ module.exports = function (app, config) {
                     return next(error);
                 });
         
-        //slide 13? Don't know where to put this
-        router.get('/user/:id', function(req, res, next){
-            logger.log('Get user' + req.params.id, 'verbose');
+        //slide 13 Express Routing? Don't know where to put this
+    // router.get('/user/:id', function(req, res, next){
+    //    logger.log('Get user' + req.params.id, 'verbose');
         
-            res.status(200).json({id: req.params.id}); 
-        });
+    //      res.status(200).json({id: req.params.id}); 
+    //});
         
 
 
