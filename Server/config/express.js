@@ -5,10 +5,16 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var bluebird = require('bluebird');
 var glob = require('glob');
+var cors = require('cors');
+
 
 
 
 module.exports = function (app, config) {
+
+  //cors
+  app.use(cors({origin: 'http://localhost:9000'}));
+  
 
   app.use(function (req, res, next) {
     console.log('Request from ' + req.connection.remoteAddress);
