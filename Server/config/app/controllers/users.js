@@ -6,9 +6,20 @@ var express = require('express'),
 mongoose = require('mongoose'),
 User = mongoose.model('User');
 
+//slide 19
+passportService = require('../../config/passport'),
+passport = require('passport')
+
+var requireLogin = passport.authenticate('local', { session: false });
+
+
 
 module.exports = function (app, config) {
     app.use('/api', router);
+
+    //not sure if this is the right place
+    router.route('/users/login').post(requireLogin, login);
+    
     
     router.route('/users').get(function(req, res, next){
 		logger.log('Get all users', 'verbose');
@@ -30,7 +41,7 @@ module.exports = function (app, config) {
           })
       
    
-    router.route('/users/userID').get(function(req, res, next){
+    router.route('/users/:userId').get(function(req, res, next){
         logger.log('Get all users', 'verbose');
         //Get a user handler
                 User.findById(req.params.userId)
@@ -82,6 +93,30 @@ module.exports = function (app, config) {
                 .catch(error => {
                     return next(error);
                 });
+
+        router.put('/users/password/:userId', function(req, res, next){
+            logger.log('Update user ' + req.params.userId, 'verbose');
+        
+            User.findById(req.params.userId)
+                .exec()
+                .then(function (user) {
+                    if (req.body.password !== undefined) {
+                        user.password = req.body.password;
+                    }
+        
+                    user.save()
+                        .then(function (user) {
+                            res.status(200).json(user);
+                        })
+                        .catch(function (err) {
+                            return next(err);
+                        });
+                })
+                .catch(function (err) {
+                    return next(err);
+                });
+        });
+        
         
         //slide 13 Express Routing? Don't know where to put this
     // router.get('/user/:id', function(req, res, next){

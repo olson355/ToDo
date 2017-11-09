@@ -9,6 +9,8 @@ export class Wall {
   }
 
   logout(){
-	  this.router.navigate('home');
-  }
+    sessionStorage.removeItem('user');
+    this.auth.logout();
+}
+
 }
