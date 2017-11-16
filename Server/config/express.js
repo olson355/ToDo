@@ -53,6 +53,7 @@ module.exports = function (app, config) {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
     require(controller)(app, config);

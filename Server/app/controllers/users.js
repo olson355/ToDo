@@ -84,6 +84,7 @@ module.exports = function (app, config) {
             .catch(error => {
                 return next(error);
             });
+        });
 
         router.put('/users/password/:userId', function (req, res, next) {
             logger.log('Update user ' + req.params.userId, 'verbose');

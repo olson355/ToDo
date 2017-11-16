@@ -23,6 +23,7 @@ export class DataServices {
                 })
                 .withInterceptor({
                 request(request) {
+                    //add something here about retreiving a token- he will update aurelia slides and add to D2l
                     console.log(`Requesting ${request.method} ${request.url}`);
                     return request;
                 },
