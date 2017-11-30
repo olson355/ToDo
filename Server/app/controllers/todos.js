@@ -5,7 +5,7 @@ var express = require('express'),
     logger = require('../../config/logger');
 //import the user model
 mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    ToDo = mongoose.model('ToDo');
 multer = require('multer'),
     mkdirp = require('mkdirp');
 passport = require("passport");
@@ -52,11 +52,11 @@ module.exports = function (app, config) {
     });
 
 
-    router.route('/users').post(function (req, res, next) {
+    router.route('/todos').post(function (req, res, next) {
         logger.log('Get all users', 'verbose');
         //user POST handler
-        var user = new User(req.body);
-        user.save()
+        var todos = new ToDo(req.body);
+        todos.save()
             .then(result => {
                 res.status(201).json(result);
             })

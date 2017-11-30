@@ -22,11 +22,11 @@ export class ToDos {
         if (todo) {
             if (!todo._id) {
 
-                let serverResponse = await this.data.post(todo, this.TODO_SERVICE + "/" + todo._id);
+                let serverResponse = await this.data.post(todo, this.TODO_SERVICE);
                 if (!serverResponse.error) {
                     this.todosArray.push(serverResponse);
                 }
-                return response;
+                return serverResponse;
             } else {
                 let response = await this.data.put(todo, this.TODO_SERVICE + "/" + todo._id);
                 if (!response.error) {
