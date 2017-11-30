@@ -11,9 +11,9 @@ export class App {
       name: 'Home' 
     },
       {
-         route: 'wall', 
-         moduleId: './modules/wall', 
-         name: 'Wall', 
+         route: 'list', 
+         moduleId: './modules/list', 
+         name: 'List', 
          auth: true 
         }
     ]);

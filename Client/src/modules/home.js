@@ -5,7 +5,7 @@ import { Users } from '../resources/data/users';
 import {AuthService} from 'aurelia-auth';
 
 
-@inject(Router, Users,  AuthService)
+@inject(Router, Users, AuthService)
 export class Home {
   constructor(router, user, auth) {
     this.router = router;

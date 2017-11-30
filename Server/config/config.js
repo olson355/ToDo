@@ -8,7 +8,10 @@ var config = {
     app: {      name: 'Chirps'    },
     port: 5000,
     db: 'mongodb://127.0.0.1/chirps-dev',
+    uploads: rootPath + "/public/uploads/",
     secret: "cayennedlikedhistreats"
+
+    
   },
  
  production: {    

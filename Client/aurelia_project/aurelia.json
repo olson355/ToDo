@@ -81,10 +81,9 @@
             "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
-
           },
-          
           "text",
+          "moment",
           {
             "name": "aurelia-fetch-client",
             "path": "../node_modules/aurelia-fetch-client/dist/amd",
