@@ -1,4 +1,4 @@
-//I think I have to change all the Users to ToDo?? Maybe?
+
 
 var express = require('express'),
     router = express.Router(),
@@ -10,23 +10,25 @@ multer = require('multer'),
     mkdirp = require('mkdirp');
 passport = require("passport");
 
+var requireAuth = passport.authenticate('jwt', { session: false });
 
 
 module.exports = function (app, config) {
     app.use('/api', router);
 
-    router.route('/User').get(function (req, res, next) {
-        logger.log('Get all Users', 'verbose');
+    router.route('/todos/user/:userid').get(function (req, res, next) {
+        logger.log('Get all todos', 'verbose');
 
         //GET all User Handler
-        var query = User.find()
+
+        var query = ToDo.find()
             .sort(req.query.order)
             .exec()
             .then(result => {
                 if (result && result.length) {
                     res.status(200).json(result);
                 } else {
-                    res.status(404).json({ message: 'No User' });
+                    res.status(404).json({ message: 'No todos' });
                 }
             })
             .catch(err => {
@@ -35,15 +37,16 @@ module.exports = function (app, config) {
     })
 
 
-    router.route('/users/userID').get(function (req, res, next) {
-        logger.log('Get all users', 'verbose');
-        //Get a user handler
-        User.findById(req.params.userId)
-            .then(user => {
-                if (user) {
-                    res.status(200).json(user);
+    router.route('/todos/:todoId').get(function (req, res, next) {
+        logger.log('Get todo' + req.params.todoId, 'verbose');
+
+        todo.findById(req.params.todoId)
+            .then(todo => {
+                if (todo) {
+                    res.status(200).json(todo);
+
                 } else {
-                    res.status(404).json({ message: "No user found" });
+                    res.status(404).json({ message: "no todo found" });
                 }
             })
             .catch(error => {
@@ -51,12 +54,11 @@ module.exports = function (app, config) {
             });
     });
 
-
     router.route('/todos').post(function (req, res, next) {
-        logger.log('Get all users', 'verbose');
-        //user POST handler
-        var todos = new ToDo(req.body);
-        todos.save()
+        logger.log('Create todo', 'verbose');
+
+        var todo = new ToDo(req.body);
+        todo.save()
             .then(result => {
                 res.status(201).json(result);
             })
@@ -65,22 +67,25 @@ module.exports = function (app, config) {
             });
     });
 
-    router.route('/users').put(function (req, res, next) {
-        logger.log('Get all users', 'verbose');
-        res.status(200).json({ message: "Update User" });
+    router.route('/todos/todoId').put(function (req, res, next) {
+        logger.log('Update todo', 'verbose');
+
+        ToDo.findOneAndUpdate({ _id: req.params.todoId }, req.body, { new: true, multi: false })
+        then(todo => {
+            res.status(200).json(todo);
+        })
+            .catch(error => {
+                return next(error);
+            });
+
     });
 
-    router.route('/users/password/userID').put(function (req, res, next) {
-        logger.log('Get all users', 'verbose');
-        res.status(200).json({ message: "Update user password" + rew.params.userID });
-    });
-
-    router.route('/users/userID').delete(function (req, res, next) {
-        logger.log('Get all users', 'verbose');
+    router.route('/todos/todoID').delete(function (req, res, next) {
+        logger.log('Delete todo', +req.params.todoId, 'verbose');
         //Delete Handler
-        User.remove({ _id: req.params.userId })
-            .then(user => {
-                res.status(200).json({ msg: "User Deleted" });
+        ToDo.remove({ _id: req.params.todoId })
+            .then(todo => {
+                res.status(200).json({ msg: "ToDo Deleted" });
             })
             .catch(error => {
                 return next(error);
@@ -111,7 +116,7 @@ module.exports = function (app, config) {
     router.post('/todos/upload/:userId/:todoId', upload.any(), function (req, res, next) {
         logger.log('Upload file for todo ' + req.params.todoId + ' and ' + req.params.userId, 'verbose');
 
-        Todo.findById(req.params.todoId, function (err, todo) {
+        ToDo.findById(req.params.todoId, function (err, todo) {
             if (err) {
                 return next(err);
             } else {
@@ -133,3 +138,6 @@ module.exports = function (app, config) {
         });
     });
 };
+
+
+
