@@ -37,10 +37,10 @@ module.exports = function (app, config) {
     })
 
 
-    router.route('/todos/:todoId').get(function (req, res, next) {
-        logger.log('Get todo' + req.params.todoId, 'verbose');
+    router.route('/todos/:todoID').get(function (req, res, next) {
+        logger.log('Get todo' + req.params.todoID, 'verbose');
 
-        todo.findById(req.params.todoId)
+        todo.findById(req.params.todoID)
             .then(todo => {
                 if (todo) {
                     res.status(200).json(todo);
@@ -67,10 +67,10 @@ module.exports = function (app, config) {
             });
     });
 
-    router.route('/todos/todoId').put(function (req, res, next) {
+    router.route('/todos/:todoID').put(function (req, res, next) {
         logger.log('Update todo', 'verbose');
 
-        ToDo.findOneAndUpdate({ _id: req.params.todoId }, req.body, { new: true, multi: false })
+        ToDo.findOneAndUpdate({ _id: req.params.todoID }, req.body, { new: true, multi: false })
         then(todo => {
             res.status(200).json(todo);
         })
@@ -80,10 +80,10 @@ module.exports = function (app, config) {
 
     });
 
-    router.route('/todos/todoID').delete(function (req, res, next) {
-        logger.log('Delete todo', +req.params.todoId, 'verbose');
+    router.route('/todos/:todoID').delete(function (req, res, next) {
+        logger.log('Delete todo', +req.params.todoID, 'verbose');
         //Delete Handler
-        ToDo.remove({ _id: req.params.todoId })
+        ToDo.remove({ _id: req.params.todoID })
             .then(todo => {
                 res.status(200).json({ msg: "ToDo Deleted" });
             })
@@ -113,10 +113,10 @@ module.exports = function (app, config) {
     var upload = multer({ storage: storage });
 
 
-    router.post('/todos/upload/:userId/:todoId', upload.any(), function (req, res, next) {
-        logger.log('Upload file for todo ' + req.params.todoId + ' and ' + req.params.userId, 'verbose');
+    router.post('/todos/upload/:userId/:todoID', upload.any(), function (req, res, next) {
+        logger.log('Upload file for todo ' + req.params.todoID + ' and ' + req.params.userId, 'verbose');
 
-        ToDo.findById(req.params.todoId, function (err, todo) {
+        ToDo.findById(req.params.todoID, function (err, todo) {
             if (err) {
                 return next(err);
             } else {
