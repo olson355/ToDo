@@ -7,9 +7,6 @@ var bluebird = require('bluebird');
 var glob = require('glob');
 var cors = require('cors');
 
-
-
-
 module.exports = function (app, config) {
 
   //cors
